@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="project.css">
+    <style>
+     
+
+        h1, h4 {
+            color: #50d890;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background -->
+    <div class="area">
+        <ul class="circles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <img src="logos.png">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="front.html#section2">Services</a></li>
+                    <li><a href="front.html#contact">Contact Us</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- Contact Us Section -->
+    <div class="container mt-5">
+        <h1 class="text-center mb-5">Contact Us</h1>
+
+        <div class="row">
+            <!-- Contact Information -->
+            <div class="col-md-6">
+                <div class="card shadow-lg p-4">
+                    <h4 class="text-center mb-4">Get in Touch</h4>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> <strong>Phone:</strong> +91 9876543210</p>
+                        <p><i class="fas fa-envelope"></i> <strong>Email:</strong> support@shopmanager.com</p>
+                        <p><i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> Shop Manager HQ, New Delhi, India</p>
+                        <p><i class="fas fa-clock"></i> <strong>Hours:</strong> Mon-Fri, 9 AM - 6 PM</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="col-md-6">
+                <div class="card shadow-lg p-4">
+                    <h4 class="text-center mb-4" >Send Us a Message</h4>
+                    <form action="/contact" method="POST">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" class="form-control" rows="5" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-submit w-100">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

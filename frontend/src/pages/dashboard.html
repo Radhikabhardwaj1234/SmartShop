@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Shop Management System</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="project.css">
+
+</head>
+
+<body>
+    <!-- Background -->
+    <div class="area">
+        <ul class="circles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+  
+    <header>
+        <nav class="navbar" style="  border-radius: 0px;">
+            <div class="container">
+                <img src="logos.png">
+            </div>
+        </nav>
+    </header>
+    <body id="body">
+        <div style="display:flex;">  
+            <div class="sidebar" id="menu">
+                <i id="closeMenu" onclick="sidebarHide()" class="fa fa-arrow-left" aria-hidden="true"></i>
+            <div class="logo">
+                <br><br>
+                <ul class="menu">
+                    <li  class="active"> <a href ="index.html"><i class="fa fa-home" aria-hidden="true"></i>
+                    <span class="sidebarFont">Home</span></a>
+                    </li>
+                    <!-- <li> <a href ="profile.html"><i class="fas fa-user"></i>
+                    <span class="sidebarFont">Profile</span></a> -->
+                    </li>
+                    <li> <a href ="billing.html"><i class="fas fa-file-invoice"></i>
+                    <span class="sidebarFont">Go to billing</span></a>
+                    </li>
+                    <li> <a href ="dues.html"><i class="fas fa-file-invoice"></i>
+                    <span class="sidebarFont">Check dues</span></a>
+                    </li>
+                    <li> <a href ="stock.html.html"><i class="fas fa-inventory"></i>
+                    <span class="sidebarFont">Manage stocks</span></a>
+                    </li>
+                    <li> <a href ="income.html"><i class="fas fa-chart-line"></i>
+                    <span class="sidebarFont">Track Income</span></a>
+                    </li>
+                  
+                    <li> <a href ="contact.html"><i class="fa fa-phone" aria-hidden="true"></i>
+                    <span class="sidebarFont">Contact</span></a>
+                    </li>
+                    <li> <a href ="about.html"><i style="margin-left:3px;" class="fa fa-info" aria-hidden="true"></i>
+                    <span class="sidebarFont" style="margin-left:9px;">About</span></a>
+                    </li>
+                    <li> <a href ="/logout"><i class="fas fa-sign-out-alt"></i>
+                    <span class="sidebarFont" style="margin-left:-3px;">Logout</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    
+    <div style="width:100%;">   
+        <h1 id="username-placeholder" class="welcome-text"> </h1>
+        <i id='btnn' onclick="sidebarShow()" class="fa fa-bars" aria-hidden="true"></i>
+        
+    <div class="container mt-5" id="beside-sidebar">
+      
+
+        <div class="dashboard-content">
+          
+            <div class="col-md-3">
+                <div class="dashboard-card">
+                    <p>Total Sales</p>
+                    <h3>₹ 50,000</h3>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="dashboard-card">
+                    <p>Total Stock</p>
+                    <h3>150 Items</h3>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="dashboard-card">
+                    <p>Pending Dues</p>
+                    <h3>₹ 5,000</h3>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="dashboard-card">
+                    <p>Today's Income</p>
+                    <h3>₹ 2,000</h3>
+                </div>
+            </div>
+        </div>
+        <div class="chart-row">
+            <!-- Income Chart -->
+            <div class="chart-container">
+                <div class="card shadow-lg p-4">
+                    <h4 class="text-center mb-4">Income Trends</h4>
+                    <canvas id="incomeChart"></canvas>
+                </div>
+            </div>
+        
+            <!-- Dues Pie Chart -->
+            <div class="pie-chart-container">
+                <div class="card shadow-lg p-4">
+                    <h4 class="text-center">Overall Dues</h4>
+                    <canvas id="duesChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    <script>
+        // Sample Data for Income Chart
+        const ctx = document.getElementById('incomeChart').getContext('2d');
+        const incomeChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['2024-11-01', '2024-11-02', '2024-11-03', '2024-11-04', '2024-11-05'],
+                datasets: [{
+                    label: 'Daily Income (₹)',
+                    data: [500, 1000, 1500, 1200, 2000],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: true,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Income (₹)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Sample Data for Dues Pie Chart
+        const duesCtx = document.getElementById('duesChart').getContext('2d');
+        const duesChart = new Chart(duesCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Paid', 'Pending'],
+                datasets: [{
+                    data: [2000, 5000],
+                    backgroundColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+                    borderColor: 'rgba(255, 255, 255, 0.1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>

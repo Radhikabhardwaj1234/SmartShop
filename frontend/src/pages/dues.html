@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dues</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="project.css">
+    <style>
+        /* Styling the buttons to appear in one row */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .action-buttons button {
+            width: 100px; /* Adjust button width */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background -->
+    <div class="area">
+      <ul class="circles">
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+      </ul>
+  </div>
+
+  <!-- Header -->
+  <header>
+      <nav class="navbar">
+          <div class="container">
+              <img src="logos.png">
+              <ul>
+                  <li><a href="index.html">Home</a></li>
+                  <li><a href="about.html">About</a></li>
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" id="servicesDropdown" data-toggle="dropdown">Services</a>
+                    <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+                        <li><a href="billing.html">Billing</a></li>
+                        <li><a href="dues.html">Dues</a></li>
+                        <li><a href="stock.html">Stock</a></li>
+                        <li><a href="income.html">Income</a></li>
+                    </ul>
+                </li>
+                  <li><a href="front.html#contact">Contact Us</a></li>
+              </ul>
+          </div>
+      </nav>
+  </header>
+
+    <!-- Dues Section -->
+    <div class="container mt-5">
+        <h1 class="text-center mb-5">Customer Dues</h1>
+
+        <!-- Add Customer Form -->
+        <div class="card shadow-lg p-4 mb-4">
+            <h4 class="text-center mb-4">Add Customer with Due</h4>
+            <form id="addCustomerForm" class="form-row">
+                <div class="col-md-4 mb-3">
+                    <input type="text" class="form-control" id="customerName" placeholder="Customer Name" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <input type="text" class="form-control" id="customerContact" placeholder="Contact (Phone/Email)" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <input type="number" class="form-control" id="dueAmount" placeholder="Due Amount (₹)" required>
+                </div>
+                <div class="col-12 mb-3">
+                    <input type="date" class="form-control" id="dueDate" placeholder="Due Date" required>
+                </div>
+                <div class="col-12 text-center">
+                    <button type="button" class="btn btn-success btn-lg w-100" id="addCustomerBtn"><i class="fas fa-user-plus"></i> Add Customer</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Dues Table -->
+        <div class="card shadow-lg p-4">
+            <h4 class="text-center mb-4">Customer Dues List</h4>
+            <table class="table table-hover table-bordered text-center" id="duesTable">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Customer Name</th>
+                        <th>Contact</th>
+                        <th>Due Amount (₹)</th>
+                        <th>Due Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="duesList"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Add Customer with Due
+        document.getElementById('addCustomerBtn').addEventListener('click', function () {
+            var customerName = document.getElementById('customerName').value;
+            var customerContact = document.getElementById('customerContact').value;
+            var dueAmount = parseFloat(document.getElementById('dueAmount').value);
+            var dueDate = document.getElementById('dueDate').value;
+
+            if (!customerName || !customerContact || isNaN(dueAmount) || !dueDate) {
+                alert("Please fill out all fields correctly.");
+                return;
+            }
+
+            var table = document.getElementById('duesTable');
+            var row = table.insertRow(-1);
+
+            row.innerHTML = `
+                <td>${customerName}</td>
+                <td>${customerContact}</td>
+                <td class="dueAmount">₹${dueAmount.toFixed(2)}</td>
+                <td>${dueDate}</td>
+                <td class="action-buttons">
+                    <button class="btn btn-primary btn-sm payPartialBtn">Pay Partial</button>
+                    <button class="btn btn-success btn-sm markPaidBtn">Mark Paid</button>
+                </td>
+            `;
+
+            clearInputs();
+            addEventListeners();
+        });
+
+        // Event Listeners for Buttons
+        function addEventListeners() {
+            // Pay Partial Button
+            document.querySelectorAll('.payPartialBtn').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    var row = this.closest('tr');
+                    var dueAmountCell = row.querySelector('.dueAmount');
+                    var dueAmount = parseFloat(dueAmountCell.textContent.replace('₹', ''));
+
+                    var partialPayment = parseFloat(prompt("Enter amount to pay (₹):"));
+                    if (isNaN(partialPayment) || partialPayment <= 0 || partialPayment > dueAmount) {
+                        alert("Invalid payment amount.");
+                        return;
+                    }
+
+                    // Update Due Amount
+                    dueAmount -= partialPayment;
+                    dueAmountCell.textContent = `₹${dueAmount.toFixed(2)}`;
+
+                    // Mark as Paid if Fully Cleared
+                    if (dueAmount === 0) {
+                        row.querySelector('.markPaidBtn').disabled = true;
+                        row.querySelector('.payPartialBtn').disabled = true;
+                    }
+                });
+            });
+
+            // Mark Paid Button
+            document.querySelectorAll('.markPaidBtn').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    var row = this.closest('tr');
+                    row.querySelector('.dueAmount').textContent = "₹0.00";
+                    row.querySelector('.payPartialBtn').disabled = true;
+                    row.querySelector('.markPaidBtn').disabled = true;
+                });
+            });
+        }
+
+        // Clear Input Fields
+        function clearInputs() {
+            document.getElementById('customerName').value = '';
+            document.getElementById('customerContact').value = '';
+            document.getElementById('dueAmount').value = '';
+            document.getElementById('dueDate').value = '';
+        }
+    </script>
+</body>
+
+</html>

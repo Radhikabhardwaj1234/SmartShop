@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="project.css">
+</head>
+
+<body>
+    <!-- Background -->
+    <div class="area">
+        <ul class="circles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <img src="logos.png">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="front.html#contact">Contact Us</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Registration Form -->
+    <div id="headingLogin">
+        <div class="registration-container">
+            <h3>Create Your Account</h3>
+            <form id="registration-form" onsubmit="return validateForm()" action="/register" method="POST">
+                <div class="input-group">
+                    <input type="text" id="shop_name" name="shopName" placeholder="Shop Name" required>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="first_name" name="name" placeholder="Your Name" required>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="aadhar_number" name="aadharNumber" placeholder="Aadhar Number" pattern="[0-9]{12}" title="Must be 12 digits" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" id="email" name="email" placeholder="Email Address" required>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="phone_number" name="phoneNumber" placeholder="Phone Number" pattern="[0-9]{10}" title="Must be 10 digits" required>
+                </div>
+                <div class="input-group">
+                    <textarea id="shop_address" name="shopAddress" placeholder="Shop Address" required></textarea>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" name="password" placeholder="Password" minlength="8" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="confirm_password" name="confirmPassword" placeholder="Confirm Password" required>
+                </div>
+                <button type="submit"><i class="fas fa-user-plus"></i> Register</button>
+                <div class="register-link">
+                    <span>Already have an account?</span> <a href="login.html">Login here</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        function validateForm() {
+            var password = document.getElementById("password").value;
+            var confirm_password = document.getElementById("confirm_password").value;
+
+            if (password != confirm_password) {
+                alert("Passwords do not match");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+
+</html>

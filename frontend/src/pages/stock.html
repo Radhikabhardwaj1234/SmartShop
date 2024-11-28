@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="project.css">
+    <style>
+        /* Styling the buttons to appear in a row */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .action-buttons button {
+            width: 80px; /* Adjust button width */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background -->
+    <div class="area">
+      <ul class="circles">
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+      </ul>
+  </div>
+
+  <!-- Header -->
+  <header>
+      <nav class="navbar">
+          <div class="container">
+              <img src="logos.png">
+              <ul>
+                  <li><a href="index.html">Home</a></li>
+                  <li><a href="about.html">About</a></li>
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" id="servicesDropdown" data-toggle="dropdown">Services</a>
+                    <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+                        <li><a href="billing.html">Billing</a></li>
+                        <li><a href="dues.html">Dues</a></li>
+                        <li><a href="stock.html">Stock</a></li>
+                        <li><a href="income.html">Income</a></li>
+                    </ul>
+                </li>
+                  <li><a href="front.html#contact">Contact Us</a></li>
+              </ul>
+          </div>
+      </nav>
+  </header>
+
+    <!-- Stock Management Section -->
+    <div class="container mt-5">
+        <h1 class="text-center mb-5">Stock Management</h1>
+
+        <!-- Add Product Form -->
+        <div class="card shadow-lg p-4 mb-4">
+            <h4 class="text-center mb-4">Add New Product</h4>
+            <form id="addProductForm" class="form-row">
+                <div class="col-md-4 mb-3">
+                    <input type="text" class="form-control" id="productName" placeholder="Product Name" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <input type="number" class="form-control" id="quantity" placeholder="Quantity" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <input type="number" class="form-control" id="price" placeholder="Price (₹)" required>
+                </div>
+                <div class="col-12 text-center">
+                    <button type="button" class="btn btn-success btn-lg w-100" id="addProductBtn"><i class="fas fa-plus"></i> Add Product</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Product List Table -->
+        <div class="card shadow-lg p-4">
+            <h4 class="text-center mb-4">Stock List</h4>
+            <table class="table table-hover table-bordered text-center" id="stockTable">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Price (₹)</th>
+                        <th>Total Value (₹)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="stockList"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Add Product to Stock
+        document.getElementById('addProductBtn').addEventListener('click', function () {
+            var productName = document.getElementById('productName').value;
+            var quantity = parseFloat(document.getElementById('quantity').value);
+            var price = parseFloat(document.getElementById('price').value);
+
+            if (!productName || isNaN(quantity) || isNaN(price) || quantity <= 0 || price <= 0) {
+                alert("Please fill out all fields correctly.");
+                return;
+            }
+
+            var totalValue = quantity * price;
+
+            var table = document.getElementById('stockTable');
+            var row = table.insertRow(-1);
+            row.innerHTML = `
+                <td>${productName}</td>
+                <td class="quantity">${quantity}</td>
+                <td class="price">₹${price.toFixed(2)}</td>
+                <td class="totalValue">₹${totalValue.toFixed(2)}</td>
+                <td class="action-buttons">
+                    <button class="btn btn-warning btn-sm editProductBtn">Edit</button>
+                    <button class="btn btn-danger btn-sm removeProductBtn">Remove</button>
+                </td>
+            `;
+
+            clearInputs();
+            addEventListeners();
+        });
+
+        // Event Listeners for Buttons
+        function addEventListeners() {
+            // Edit Product Button
+            document.querySelectorAll('.editProductBtn').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    var row = this.closest('tr');
+                    var nameCell = row.cells[0];
+                    var quantityCell = row.cells[1];
+                    var priceCell = row.cells[2];
+                    var totalValueCell = row.cells[3];
+
+                    // Allow editing of quantity and price directly
+                    var currentQuantity = quantityCell.textContent;
+                    var currentPrice = priceCell.textContent.replace('₹', '');
+
+                    // Prompt for new quantity and price
+                    var newQuantity = prompt("Enter new quantity:", currentQuantity);
+                    var newPrice = prompt("Enter new price:", currentPrice);
+
+                    if (isNaN(newQuantity) || isNaN(newPrice) || newQuantity <= 0 || newPrice <= 0) {
+                        alert("Please enter valid values.");
+                        return;
+                    }
+
+                    // Update quantity, price, and total value
+                    quantityCell.textContent = newQuantity;
+                    priceCell.textContent = `₹${newPrice}`;
+                    totalValueCell.textContent = `₹${(newQuantity * newPrice).toFixed(2)}`;
+                });
+            });
+
+            // Remove Product Button
+            document.querySelectorAll('.removeProductBtn').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    this.closest('tr').remove();
+                });
+            });
+        }
+
+        // Clear Input Fields
+        function clearInputs() {
+            document.getElementById('productName').value = '';
+            document.getElementById('quantity').value = '';
+            document.getElementById('price').value = '';
+        }
+    </script>
+</body>
+
+</html>

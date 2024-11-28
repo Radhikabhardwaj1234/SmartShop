@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing System</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="project.css">
+</head>
+
+<body>
+    <!-- Background -->
+    <div class="area">
+        <ul class="circles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <img src="logos.png">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" id="servicesDropdown" data-toggle="dropdown">Services</a>
+                        <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+                            <li><a href="billing.html">Billing</a></li>
+                            <li><a href="dues.html">Dues</a></li>
+                            <li><a href="stock.html">Stock</a></li>
+                            <li><a href="income.html">Income</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="front.html#contact">Contact Us</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Billing Section -->
+    <div class="container">
+        <h1 class="text-center mb-4">Billing System</h1>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card p-4">
+                    <h4 class="text-center mb-3">Add Product</h4>
+                    <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                            <input type="text" class="form-control" id="productName" placeholder="Product Name" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <input type="number" class="form-control" id="quantity" placeholder="Quantity" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <input type="number" class="form-control" id="price" placeholder="Price" required>
+                        </div>
+                    </div>
+                    <button class="btn btn-success btn-block" id="addProduct"><i class="fas fa-plus"></i> Add Product</button>
+                </div>
+
+                <div class="mt-4">
+                    <table class="table table-bordered table-striped text-center" id="productTable">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Quantity</th>
+                                <th>Price (₹)</th>
+                                <th>Total (₹)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productList"></tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4" id="total">
+                    <h4 class="text-center mb-4" id="totalAmount">Total</h4>
+                    <div class="text-right">
+                        <h3 id="totalAmount">Total: ₹<span>0.00</span></h3>
+                    </div>
+                    <button class="btn btn-primary btn-block" id="invoiceBtn"><i class="fas fa-file-invoice"></i> Generate Invoice</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script -->
+    <script>
+        document.getElementById('addProduct').addEventListener('click', function () {
+            var productName = document.getElementById('productName').value;
+            var quantity = parseFloat(document.getElementById('quantity').value);
+            var price = parseFloat(document.getElementById('price').value);
+
+            if (!productName || isNaN(quantity) || isNaN(price) || quantity <= 0 || price <= 0) {
+                alert("Please enter valid product details.");
+                return;
+            }
+
+            var total = quantity * price;
+
+            var table = document.getElementById('productTable');
+            var row = table.insertRow(-1);
+            row.innerHTML = `
+                <td>${productName}</td>
+                <td>${quantity}</td>
+                <td>₹${price.toFixed(2)}</td>
+                <td>₹${total.toFixed(2)}</td>
+            `;
+
+            updateTotal();
+            clearInputs();
+        });
+
+        document.getElementById('invoiceBtn').addEventListener('click', function () {
+            if (document.getElementById('productTable').rows.length <= 1) {
+                alert("No products to generate an invoice.");
+                return;
+            }
+            alert('Invoice generated successfully!');
+            clearTable();
+        });
+
+        function updateTotal() {
+            var table = document.getElementById('productTable');
+            var total = 0;
+            for (var i = 1; i < table.rows.length; i++) {
+                total += parseFloat(table.rows[i].cells[3].textContent.replace('₹', ''));
+            }
+            document.getElementById('totalAmount').textContent = total.toFixed(2);
+        }
+
+        function clearInputs() {
+            document.getElementById('productName').value = '';
+            document.getElementById('quantity').value = '';
+            document.getElementById('price').value = '';
+        }
+
+        function clearTable() {
+            var table = document.getElementById('productTable');
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+            document.getElementById('totalAmount').textContent = '0.00';
+        }
+    </script>
+</body>
+
+</html>
